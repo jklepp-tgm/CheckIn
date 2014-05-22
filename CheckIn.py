@@ -3,18 +3,28 @@
 from flask import Flask
 from flask import render_template
 
-app = Flask(__name__)
+from pathlib import Path
 
-apipath = u"/v0/"
+import json
+
+import default_config as config
+
+app = Flask(__name__)
 
 @app.route("/")
 def index():
     return render_template('index.html')
 
-@app.route(apipath + "/FileList")
+@app.route("/FileList")
 def filelist():
-    pass
+    p = Path(config.document_root)
+    return json.dumps([{
+        "name": str(x),
+        "isDirectory": x.is_dir()}
+
+        for x in p.iterdir()])
 
 # start webservice
 if __name__ == "__main__":
+    app.debug = True
     app.run('0.0.0.0')
