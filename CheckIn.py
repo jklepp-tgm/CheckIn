@@ -7,7 +7,7 @@ from flask import Response
 from flask import render_template
 from flask import request
 
-import json
+from flask import json
 
 import os
 
