@@ -2,12 +2,13 @@
 
 import default_config as config
 
+from flask import abort
 from flask import Flask
-from flask import Response
+from flask import json
+from flask import jsonify
 from flask import render_template
 from flask import request
-
-from flask import json
+from flask import Response
 
 import os
 
@@ -21,10 +22,14 @@ def index():
 
 @app.route("/FileList")
 def filelist():
+    root_path = Path(config.document_root)
     try:
-        p = Path(request.args['path'])
+        p = root_path / request.args['path']
     except:
-        p = Path(config.document_root)
+        p = root_path
+
+    if p.resolve() < root_path.resolve():
+        abort(403)
 
     return Response(json.dumps([{
         "name": os.path.basename(str(x)),
