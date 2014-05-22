@@ -1,6 +1,7 @@
 #!/bin/env python
 
 from flask import Flask
+from flask import Response
 from flask import render_template
 
 from pathlib import Path
@@ -18,11 +19,10 @@ def index():
 @app.route("/FileList")
 def filelist():
     p = Path(config.document_root)
-    return json.dumps([{
+    return Response(json.dumps([{
         "name": str(x),
         "isDirectory": x.is_dir()}
-
-        for x in p.iterdir()])
+        for x in p.iterdir()]), mimetype='application/json')
 
 # start webservice
 if __name__ == "__main__":

@@ -1,2 +1,4 @@
 doc/_build/
 __pycache__
+*.swp
+user_config.py
